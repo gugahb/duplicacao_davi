@@ -8,6 +8,8 @@
 
 import os
 import sys
+import thread
+
 #
 class duplicaISO(object):
 
