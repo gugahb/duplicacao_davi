@@ -1,19 +1,17 @@
 Duplicação: 
 
-	Grava uma imagem .ISO/.IMG para umas das unidades de DVD ou CD da maquina, usando 
-	do programa cdrecord, procurando por um código especifico que se encontra no inicio
-	do nome de um arquivo em um diretório especifico.
+	Grava uma imagem .ISO/.IMG para umas das unidades de DVD ou CD da maquina, 
+	usando do programa cdrecord, procurando por um código especifico que se 
+	encontra no inicio do nome de um arquivo em um diretório especifico.
 
-	Este script foi criado para um teste de automação que estamos fazendo para uma plataforma
-	de duplicação de medias para gerar copias especificar de uma variedade de arquivos que estão
-	catalogados com este padrão de nomes com espaçamento.
+	Este script foi criado para um teste de automação que estamos fazendo para 
+	uma plataforma de duplicação de medias para gerar copias especificar de uma 
+	variedade de arquivos que estão catalogados com este padrão de nomes com 
+	espaçamento.
 
-<<<<<<< HEAD
-=======
-Obs: -ajuste a serem feitos-
->>>>>>> ebb0850ab6da04d2ca7ccc1fc95bf85b1c623dcf
 
-- O código está dividido em duas partes, um arquivo com a classe o outro com exemplo de uso.
+- O código está dividido em duas partes, um arquivo com a classe o outro 
+  com exemplo de uso.
 
 	duplica.py     - classe
 	duplicacao.py  - exemplo de uso
