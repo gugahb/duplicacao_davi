@@ -1,7 +1,7 @@
 #!/user/bin/env python
 # -*- coding: utf-8 -*-
 #
-# por: @neviim / @gughb 	
+# por: @neviim / @gugahb 	
 #			 				criado..: 25/04/2013
 #			 				alterado: 13/05/2013 
 # -------
