@@ -24,11 +24,11 @@ class duplicaISO(object):
 		
 		Como utilizar a funcao:
 			Recebe os parametros necessários para gravação
-			- Path
-			- IDCodigo
+			- Path 		-> local onde o arquivo se encontra
+			- IDCodigo 	-> código no inicio do arquivo que irá localizar o nome inteiro do arquivo no Path
 
 		Sintax:
-			localizaArquivo(string:IDCodigo)
+			localizaArquivo(str:/home/duplicacao/iso; str:IDCodigo)
 
 		Uso:
 			localizaArquivo("26_07577")
@@ -135,7 +135,7 @@ class duplicaISO(object):
 		comando = "cdrecord -v -dao dev=" + str(vGravadora) + ",0,0 speed=4 -eject " + vPath + vNome
 		executar = "os.system('" + comando + "')"
 
-		# executa
+		#exec executar
 		print executar # falta escrever tratamento de erro.
 		
 		return True
