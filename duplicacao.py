@@ -14,15 +14,7 @@ grava, arquivo = dup.localizaArquivo(path, idcodigo)
 if grava:
 	nomeArquivo = dup.colocaBarra(arquivo)
 	dup.gravaISO(path,nomeArquivo,gravadora)
-
-'''
-grava, arquivo = localizaArquivo(path, idcodigo)
-
-if grava:
-	nomeArquivo = colocaBarra(arquivo)
-	gravaISO(path,nomeArquivo,gravadora)
 	#thread.start_new_thread(gravaISO(path,nomeArquivo,gravadora), ())
-'''
 
 # -> Fim da rotina de duplicação
 
