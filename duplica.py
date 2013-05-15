@@ -45,7 +45,7 @@ class duplicaISO(object):
 
 		arquivo = ""
 		for linha in diretorio: # -> localizar se o codigo consta em minha lista
-			codigo, lnome = nomeIMG(linha)
+			codigo, lnome = self.nomeIMG(linha)
 
 			if vIdCodigo == codigo:
 				arquivo = linha.split()
