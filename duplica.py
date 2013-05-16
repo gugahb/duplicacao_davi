@@ -8,7 +8,9 @@
 
 import os
 import sys
+import shlex
 import thread
+import subprocess
 
 #
 class duplicaISO(object):
@@ -132,10 +134,18 @@ class duplicaISO(object):
 	"""
 	def gravaISO(self, vPath, vNome, vGravadora):
 		# comando = "cdrecord -v -dao dev=2,0,0 speed=4 -eject " + path + colocaBarra(lnome) 
-		comando = "cdrecord -v -dao dev=" + str(vGravadora) + ",0,0 speed=4 -eject " + vPath + vNome
-		executar = "os.system('" + comando + "')"
-
-		#exec executar
-		print executar # falta escrever tratamento de erro.
 		
+		# *** Inicio try
+		try:
+			comando = "cdrecord -v -dao dev=" + str(vGravadora) + ",0,0 speed=4 -eject " + vPath + vNome
+			proc1 = subprocess.Popen(shlex.split( comando ), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+
+		except subprocess.CalledProcessError, e:
+			# falta escrever ainda
+
+		except OSError, e:
+			print "Error:", e.errno, "*", e.strerror
+		
+		# *** Fim try
+
 		return True
