@@ -141,11 +141,10 @@ class duplicaISO(object):
 			proc1 = subprocess.Popen(shlex.split( comando ), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
 		except subprocess.CalledProcessError, e:
-			# falta escrever ainda
+			pass
 
 		except OSError, e:
 			print "Error:", e.errno, "*", e.strerror
 		
 		# *** Fim try
-
 		return True
