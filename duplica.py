@@ -18,11 +18,12 @@ class duplicaISO(object):
 
 	def __init__(self, *args, **kwargs):
 		#
-		self.ERROR   = "ERROR"
-		self.INFO    = "INFO"
-		self.DEBUG   = "DEBUG"
-		self.ALERTA  = "WARNING"
-		self.CONSOLE = "CONSOLE"
+		self.CONSOLE  = "CONSOLE"
+		self.DEBUG    = "DEBUG"
+		self.INFO     = "INFO"
+		self.ALERTA   = "WARNING"
+		self.ERROR    = "ERROR"
+		self.CRITICAL = "CRITICAL"
 
 		# parametros para uso no tratamento de erros.
 		logging.basicConfig(level=logging.DEBUG,
@@ -48,13 +49,23 @@ class duplicaISO(object):
 		Descrição:
 			Grava em arquivo log as mensagem e erros ocorridos.
 
+			É importante usar os níveis de gravidade de certas quando você escreve você registrar chamadas. 
+			Eu costumo usar INFO para o material geralmente útil que eu gostaria de ver seguido durante o 
+			desenvolvimento, mas não em tempo de execução, enquanto eu me reservo DEBUG para a informação 
+			extra detalhado que só é útil quando algo está errado. A advertência e diminuir eu sempre tenho 
+			em tempo de execução, e na produção são enviados para um console de operador.
+
 		Parametros: 
 				vtipolog:
-						INFO		--> Informação do usuario root
-						ERROR 		--> Erros ocorridos e seu codigo
-						DEBUG		--> Mensagem para Debugar 
-						WARNING		--> Alertas
-
+						Nivel     N. Nivel   Descrição
+						--------- ---------  ---------------------------------
+						NOTSET      00 		 --> 
+						DEBUG		10		 --> Mensagem para Debugar 
+						INFO		20		 --> Informação do usuario root
+						WARNING		30		 --> Alertas
+						ERROR 		40		 --> Erros ocorridos e seu codigo
+						CRITICAL	50		 --> Sistema interrompido, erro graves
+						
 				varea:
 						Qual modulo ou area da rotina esta ativando o log.
 
@@ -74,18 +85,26 @@ class duplicaISO(object):
 
 		if   vtipolog == INFO:
 			logID.info(vmensagem)
+			#
 		elif vtipolog == ERROR:
 			logID.error(vmensagem)
+			#
 		elif vtipolog == DEBUG:	
 			logID.debug(vmensagem)
+			#
 		elif vtipolog == ALERTA:	
 			logID.warning(vmensagem)
+			#
+		elif vtipolog == CRITICAL:	
+			logID.critical(vmensagem)
+			#
 		elif vtipolog == CONSOLE:
 			logging.getLogger('').addHandler(console)
-			logID.warning(vmensagem)
+			logID.info(vmensagem)
+			#
 		else:
 			logID = logging.getLogger("gravaLog") # redefini com o nome deste metodo.
-			logID.warning("Definição do tipo do log indefinida, em variavel vtipolog.")
+			logID.critical("Definição do tipo do log indefinida, em variavel vtipolog.")
 
 
 	""" 
