@@ -3,20 +3,90 @@
 #
 # por: @neviim / @gugahb 	
 #			 				criado..: 25/04/2013
-#			 				alterado: 13/05/2013 
+#			 				alterado: 21/05/2013 
 # -------
 
 import os
 import sys
 import shlex
 import thread
+import logging
 import subprocess
 
 #
 class duplicaISO(object):
 
 	def __init__(self, *args, **kwargs):
-		pass
+		#
+		self.ERROR   = "ERROR"
+		self.INFO    = "INFO"
+		self.DEBUG   = "DEBUG"
+		self.ALERTA  = "WARNING"
+		self.CONSOLE = "CONSOLE"
+
+		# parametros para uso no tratamento de erros.
+		logging.basicConfig(level=logging.DEBUG,
+							format='%(asctime)s,%(msecs)d %(name)s %(levelname)s %(message)s',
+							datefmt='%H:%M:%S',
+							filename='/var/tmp/duplica.log',      # ler do arquivo duplog.conf
+							filemode='w')
+
+		# defini o formato a ser apresentado os dados no arquivo de log.
+		self.formato = logging.Formatter('%(asctime)s %(name)-12s: %(levelname)s %(message)s')
+		self.console = logging.StreamHandler()
+
+		console.setLevel(logging.INFO)
+		console.setFormatter(formato)
+
+		# adiciona o cabeçalho para o root loger
+		logging.getLogger('').addHandler(console)
+
+
+	'''
+		gravaLog(vTipoLog, vMensagem)
+
+		Descrição:
+			Grava em arquivo log as mensagem e erros ocorridos.
+
+		Parametros: 
+				vtipolog:
+						INFO		--> Informação do usuario root
+						ERROR 		--> Erros ocorridos e seu codigo
+						DEBUG		--> Mensagem para Debugar 
+						WARNING		--> Alertas
+
+				varea:
+						Qual modulo ou area da rotina esta ativando o log.
+
+				vmensagem: 
+						Mensagem passada.
+
+		Sintax:
+			gravaLog(str:"ERROR", str:"localizaArquivo", str:"Mensagem de Error ocorrida")
+
+		Uso:
+			gravaLog("ERROR", "localizaArquivo", "Arquivo não encontrado, sertifique se o codigo esta correto.")
+
+	'''
+	def gravaLog(self, vtipolog, varea, vmensagem):
+		
+		logID = logging.getLogger(varea)
+
+		if   vtipolog == INFO:
+			logID.info(vmensagem)
+		elif vtipolog == ERROR:
+			logID.error(vmensagem)
+		elif vtipolog == DEBUG:	
+			logID.debug(vmensagem)
+		elif vtipolog == ALERTA:	
+			logID.warning(vmensagem)
+		elif vtipolog == CONSOLE:
+			logging.getLogger('').addHandler(console)
+			logID.warning(vmensagem)
+		else:
+			logID = logging.getLogger("gravaLog") # redefini com o nome deste metodo.
+			logID.warning("Definição do tipo do log indefinida, em variavel vtipolog.")
+
 
 	""" 
 		localizaArquivo(vPath, vIdCodigo)
@@ -40,18 +110,20 @@ class duplicaISO(object):
 			"26_07577 PERMANECER EM DEUS PE FABIO DE MELO 080311.img"
 
 	"""
-	def localizaArquivo(self, vPath, vIdCodigo):
-		diretorio = os.listdir( vPath ) # -> trazendo a lista pra dentro do programa
+	def localizaArquivo(self, vpath, vidcodigo):
+		diretorio = os.listdir( vpath ) # -> trazendo a lista pra dentro do programa
 		lnome = []
-		grava = False
 
 		arquivo = ""
 		for linha in diretorio: # -> localizar se o codigo consta em minha lista
 			codigo, lnome = self.nomeIMG(linha)
 
-			if vIdCodigo == codigo:
+			if vidcodigo == codigo:
 				arquivo = linha.split()
 				grava = True
+			else:
+				gravaLog(ERROR, "localizaArquivo", "Codigo ID: "+ str(vidcodigo) +" do arquivo não encontrado.")
+				grava = False
 
 		return (grava, arquivo)
 
@@ -76,8 +148,8 @@ class duplicaISO(object):
 			[26_46357, PERMANECER, EM, DEUS, PE, FABIO, DE, MELO, 080311.img]
 
 	"""
-	def nomeIMG(self, vLinha): # -> Funcao by @neviim
-		return vLinha.split()[0], vLinha.split() # retira o codigo da imagem da string
+	def nomeIMG(self, vlinha): 
+		return vlinha.split()[0], vlinha.split() # retira o codigo da imagem da string
 
 	""" 
 		colocaBarra(vNomeArquivo)
@@ -100,12 +172,12 @@ class duplicaISO(object):
 			"26_46357\ PERMANECER\ EM\ DEUS\ PE\ FABIO\ DE\ MELO\ 080311.img"
 
 	"""
-	def colocaBarra(self, vNomeArquivo): # vNomeArquivo = lnome = linhaComando.ISO
+	def colocaBarra(self, vnomearquivo): # vnomearquivo = lnome = linhaComando.ISO
 		nome = ""
 
-		for barra in range(len(vNomeArquivo)):  #
-			nome = nome + vNomeArquivo[barra]	# concatena a String colocando a barra.
-			if barra < len(vNomeArquivo) -1 :   # se não for a ultima palavra da string.
+		for barra in range(len(vnomearquivo)):  #
+			nome = nome + vnomearquivo[barra]	# concatena a String colocando a barra.
+			if barra < len(vnomearquivo) -1 :   # se não for a ultima palavra da string.
 				nome = nome + "\ "				# adiciona barra.
 		return nome
 
@@ -132,19 +204,22 @@ class duplicaISO(object):
 			os.system('cdrecord -v -dao dev=2,0,0 speed=4 -eject /home/gustavo/iso/26_07577\ PERMANECER\ EM\ DEUS\ PE\ FABIO\ DE\ MELO\ 080311.img')
 
 	"""
-	def gravaISO(self, vPath, vNome, vGravadora):
+	def gravaISO(self, vpath, vnome, vgravadora):
 		# comando = "cdrecord -v -dao dev=2,0,0 speed=4 -eject " + path + colocaBarra(lnome) 
 		
 		# *** Inicio try
 		try:
-			comando = "cdrecord -v -dao dev=" + str(vGravadora) + ",0,0 speed=4 -eject " + vPath + vNome
-			proc1 = subprocess.Popen(shlex.split( comando ), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+			comando = "cdrecord -v -dao dev=" + str(vgravadora) + ",0,0 speed=4 -eject " + vpath + vnome
+			proces1 = subprocess.Popen(shlex.split( comando ), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+
+			# grava no arquivo log  
+			gravaLog(CONSOLE, "Imagem: "+ vnome +" gaveta: "+ str(vgravadora) +", foi gravada corretamente.")
 
 		except subprocess.CalledProcessError, e:
 			pass
 
-		except OSError, e:
-			print "Error:", e.errno, "*", e.strerror
+		except OSError, e:			# print "Error:", e.errno, "*", e.strerror
+			gravaLog(ERROR, "gravaISO", e.errno +" - "+ e.strerror)
 		
 		# *** Fim try
 		return True

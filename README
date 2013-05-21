@@ -20,14 +20,17 @@ Duplicação:
 
 Obs: Tarefas a serem realizadas:
 
-* Passa as funções atuais para uma classe -> (em teste)
-- Criar um arquivo de conf
-- Frontend desta aplicação, usar web2py, (tornado)
-- Tratamento de erro na rotina de gravação
-- Fazer o armazenamento dos logs
-- Fazer a chamada da gravação por thread
+[i] Passa as funções atuais para uma classe 
+[*] Criar um arquivo de conf
+[*] Frontend desta aplicação, usar web2py, (tornado)
+[%] Tratamento de erro na rotina de gravação
+[%] Fazer o armazenamento dos logs
+[i] Fazer a chamada usando subprocess
 
 
+Status do desenvolvimento:
 
-* esta em desenvolvimento. 
-* teste
+	[-] pendente.
+	[*] em desenvolvimento. 
+	[%] em teste.
+	[i] implementado.
