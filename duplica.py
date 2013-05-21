@@ -54,6 +54,7 @@ class duplicaISO(object):
 				grava = True
 
 		return (grava, arquivo)
+		return arquivo
 
 	""" 
 		nomeIMG(vLinha)
@@ -139,6 +140,7 @@ class duplicaISO(object):
 		try:
 			comando = "cdrecord -v -dao dev=" + str(vGravadora) + ",0,0 speed=4 -eject " + vPath + vNome
 			proc1 = subprocess.Popen(shlex.split( comando ), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+			print comando
 
 		except subprocess.CalledProcessError, e:
 			pass

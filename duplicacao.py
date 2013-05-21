@@ -1,11 +1,15 @@
 # -*- coding: utf-8 -*-
 #!/user/bin/env python
 from duplica import duplicaISO
+import ConfigParser
 
-# -> Início da rotina duplicação
-path = "/home/gustavo/iso/" # -> Local onde as isos estao 
-idcodigo = "26_07577" # -> Alguem informara esse id
-gravadora = 2
+
+cfg = ConfigParser.ConfigParser()
+cfg.read('config.ini')
+
+path = cfg.get('section1', 'path')
+idcodigo = cfg.get('section1', 'codigo')
+gravadora = cfg.get('section1', 'gravadora')
 
 dup = duplicaISO()
 
@@ -14,7 +18,9 @@ grava, arquivo = dup.localizaArquivo(path, idcodigo)
 if grava:
 	nomeArquivo = dup.colocaBarra(arquivo)
 	dup.gravaISO(path,nomeArquivo,gravadora)
-	#thread.start_new_thread(gravaISO(path,nomeArquivo,gravadora), ())
+	#thread.start_new_thread(dup.gravaISO(path,nom    eArquivo,gravadora), ())
+
+print grava
 
 # -> Fim da rotina de duplicação
 
