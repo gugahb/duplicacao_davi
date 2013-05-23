@@ -3,13 +3,14 @@
 from duplica import duplicaISO
 import ConfigParser
 
-
+# 
 cfg = ConfigParser.ConfigParser()
 cfg.read('config.ini')
-
 path = cfg.get('section1', 'path')
-idcodigo = cfg.get('section1', 'codigo')
-gravadora = cfg.get('section1', 'gravadora')
+
+
+idcodigo = "26_07577"
+gravadora = "2" 
 
 dup = duplicaISO()
 
