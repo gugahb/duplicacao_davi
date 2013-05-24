@@ -3,7 +3,7 @@
 from duplica import duplicaISO
 import ConfigParser
 
-# 
+
 cfg = ConfigParser.ConfigParser()
 cfg.read('config.ini')
 path = cfg.get('section1', 'path')
