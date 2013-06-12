@@ -14,6 +14,7 @@ gravadora = "2"
 
 dup = duplicaISO()
 
+
 grava, arquivo = dup.localizaArquivo(path, idcodigo)
 
 if grava:
@@ -21,7 +22,7 @@ if grava:
 	dup.gravaISO(path,nomeArquivo,gravadora)
 	#thread.start_new_thread(dup.gravaISO(path,nom    eArquivo,gravadora), ())
 
-print grava
+
 
 # -> Fim da rotina de duplicação
 

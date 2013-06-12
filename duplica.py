@@ -36,11 +36,11 @@ class duplicaISO(object):
 		self.formato = logging.Formatter('%(asctime)s %(name)-12s: %(levelname)s %(message)s')
 		self.console = logging.StreamHandler()
 
-		console.setLevel(logging.INFO)
-		console.setFormatter(formato)
+		self.console.setLevel(logging.INFO)
+		self.console.setFormatter(self.formato)
 
 		# adiciona o cabeçalho para o root loger
-		logging.getLogger('').addHandler(console)
+		logging.getLogger('').addHandler(self.console)
 
 
 	'''
@@ -83,22 +83,22 @@ class duplicaISO(object):
 
 		logID = logging.getLogger(varea)
 
-		if   vtipolog == INFO:
+		if   vtipolog == self.INFO:
 			logID.info(vmensagem)
 			#
-		elif vtipolog == ERROR:
+		elif vtipolog == self.ERROR:
 			logID.error(vmensagem)
 			#
-		elif vtipolog == DEBUG:	
+		elif vtipolog == self.DEBUG:	
 			logID.debug(vmensagem)
 			#
-		elif vtipolog == ALERTA:	
+		elif vtipolog == self.ALERTA:	
 			logID.warning(vmensagem)
 			#
-		elif vtipolog == CRITICAL:	
+		elif vtipolog == self.CRITICAL:	
 			logID.critical(vmensagem)
 			#
-		elif vtipolog == CONSOLE:
+		elif vtipolog == self.CONSOLE:
 			logging.getLogger('').addHandler(console)
 			logID.info(vmensagem)
 			#
@@ -141,7 +141,7 @@ class duplicaISO(object):
 				arquivo = linha.split()
 				grava = True
 			else:
-				gravaLog(ERROR, "localizaArquivo", "Codigo ID: "+ str(vidcodigo) +" do arquivo não encontrado.")
+				self.gravaLog(self.ERROR, "localizaArquivo", "Codigo ID: "+ str(vidcodigo) +" arquivo não foi encontrado.")
 				grava = False
 
 		return (grava, arquivo)
@@ -232,13 +232,13 @@ class duplicaISO(object):
 			proces1 = subprocess.Popen(shlex.split( comando ), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
 			# grava no arquivo log  
-			gravaLog(CONSOLE, "Imagem: "+ vnome +" gaveta: "+ str(vgravadora) +", foi gravada corretamente.")
+			gravaLog(self.CONSOLE, "Imagem: "+ vnome +" gaveta: "+ str(vgravadora) +", foi gravada corretamente.")
 
 		except subprocess.CalledProcessError, e:
 			pass
 
 		except OSError, e:			# print "Error:", e.errno, "*", e.strerror
-			gravaLog(ERROR, "gravaISO", e.errno +" - "+ e.strerror)
+			gravaLog(self.ERROR, "gravaISO", e.errno +" - "+ e.strerror)
 
 		# *** Fim try
 		return True
