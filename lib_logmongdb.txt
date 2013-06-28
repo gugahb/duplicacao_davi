@@ -1,0 +1,107 @@
+'''
+Referencia de uso da class: logDuplica
+
+	# set um novo ip do server mongoDB
+	set_ipServer(ip)
+
+	# retorna o ip do server		
+	get_ipServer()
+
+	# set nova porta do server
+	set_porta(porta)
+
+	# retorna a porta do server
+	get_porta()
+
+	# alaga um documento especifico 
+	apagaDocumento()
+
+	# efetua alteraçoes em um documento especifico 	
+	alteraDocumento()
+
+	# abre ou cria um banco de dados
+	conectaBanco(banco="test")
+		retorna: True ou False
+
+	# grava um registro no banco
+	gravaDocumento(registro)
+		retorna: 0
+
+	# le um registro espacifico, parametro por "filtro"
+	get_documento(filtro)
+		# filtro é um jSON ex: {"autor": "Carlos Silva"}
+		retorna: o documento (registro) se encontrado
+
+	# retorna quantidade de registro na tabela "log"
+	get_totalDocumento()
+		retorna: o numero de documento (registro) na coleção (tabela)
+
+	# retorna multiplos documentos
+	listaDocumentos(filtro, num_de_registros=5, pagina=1)
+		# filtro é um jSON ex: {"autor": "Neviim Jads"}
+		# num_de_registro: numero de registro que sera retornado
+		# pagina: numero de pagina que sera retornado
+'''
+
+#
+# Aplicação
+#
+
+'''
+dependencias usadas neste modulo:
+	$ pip install mongoengine
+	$ pip install pymongo
+
+Para apagar um banco:
+em: $ mongo
+			> show dbs
+			> use banco
+			> db.dropDatabase()
+''' 
+
+#
+# Exemplos:
+#
+
+$ cat test.py
+
+#!/user/bin/env python
+# -*- coding: utf-8 -*-
+#
+from lib_logmongodb import logDuplica
+
+## main aplica os metodos criados.
+##
+def main():
+
+	## abre um banco
+	ulog = logDuplica()
+	ulog.conectaBanco("bancodb")
+	
+	## este metodo pode trocar o ip e a porta setado por padrão na class
+	## se não for usar o "localhost" podera resetar o IP e a porta de onde 
+	## esta o mongoDB server instalado.
+	#
+	# ulog.set_ipServer("192.168.1.100")
+	# ulog.set_porta(27017)
+	# print ulog.get_ipServer()
+	# print ulog.get_porta()
+
+	## grava um registro no banco bancodb
+	registro = {"autor": "Neviim Jads",
+	            "texto": "O Senhor e meu pastor",
+	            "tags" : ["nada", "fata", "prados"]}
+	ulog.gravaDocumento(registro)
+
+	print ulog.get_documento({"autor": "Neviim Jads"})
+	print ulog.get_totalDocumento()
+	print "."
+
+	dic = ulog.listaDocumentos({'autor': 'Neviim Jads'}, 2, 1)
+	for registro in dic:
+		print registro
+
+
+## main inicio
+if __name__ == '__main__':
+	main()
